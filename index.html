@@ -25,6 +25,13 @@ main{max-width:760px;margin:0 auto;padding:10px 12px 30px}
 .star{background:none;border:0;font-size:22px;color:var(--mu);padding:0 4px}.star.on{color:#e8a900}
 a{color:var(--ac);font-size:13px}ul,ol{margin:4px 0 0;padding-left:20px;font-size:14px}.h{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);margin-top:10px}li{margin:3px 0}
 .imp3{background:#f4c430!important;color:#222!important;font-weight:700}.imp2{background:#cfe0ff!important;color:#17306b!important}.imp1{opacity:.8}.foot{color:var(--mu);font-size:12px;padding:10px 2px}
+.go,.go2{width:100%;margin-top:12px;padding:13px;border:0;border-radius:12px;font-size:16px;font-weight:600}.go{background:var(--ac);color:#fff}.go2{background:var(--chip);color:var(--tx)}.go:disabled{opacity:.4}
+.row{display:flex;gap:8px}.row button{flex:1}select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:16px;margin-top:4px}
+textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:16px/1.4 inherit;margin-top:8px}
+.ln{text-align:left;background:var(--chip);color:var(--tx);border:0;border-radius:8px;padding:8px 10px;width:100%;font-size:15px;margin:3px 0}
+.opt{display:block;width:100%;text-align:left;padding:12px;margin:6px 0;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:16px}
+.ok{color:#17803d}.bad{color:#c0392b}.opt.ok{border-color:#17803d;background:rgba(23,128,61,.12)}.opt.bad{border-color:#c0392b;background:rgba(192,57,43,.12)}
+input.bl{border:0;border-bottom:2px solid var(--ac);background:transparent;color:var(--tx);font-size:15px;padding:0 2px;text-align:center}input.bl.ok{border-color:#17803d}input.bl.bad{border-color:#c0392b}
 </style></head><body>
 <header><h1>CA Street Sense <small>California law quick reference</small></h1>
 <input id="q" type="search" placeholder="Search code, section, case, keyword (e.g. 148, DUI, Terry)">
@@ -353,9 +360,65 @@ function save(){try{localStorage.setItem('csfav',JSON.stringify([...fav]))}catch
 function tog(i){fav.has(i)?fav.delete(i):fav.add(i);save();render()}
 function card(o){const i=id(o),on=fav.has(i);
 return`<div class="card"><div class="top"><div><div>${o.law?`<span class="code">${o.law} ${esc(o.sec)}</span>`:`<span class="code">${esc(o.t)}</span>`}</div><div class="t">${o.law?esc(o.t):esc(o.sec)}</div></div><button class="star ${on?'on':''}" data-i="${esc(i)}" aria-label="favorite">${on?'★':'☆'}</button></div>${o.f?`<div class="h">Facts</div><div class="s">${esc(o.f)}</div><div class="h">Holding</div>`:''}<div class="s">${esc(o.s)}</div>${o.el&&o.el.length?`<div class="h">Elements</div><ol>${o.el.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:''}${o.pt&&o.pt.length?`<div class="h">${o.f?'Why it matters':'Key points'}</div><ul>${o.pt.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}<div style="margin-top:6px"><span class="tag imp${o.imp}">${IMPL[o.imp]}</span><span class="tag">${esc(o.cat)}</span>${o.cls&&o.cls!=='—'?`<span class="tag">${{M:'Misdemeanor',F:'Felony',W:'Wobbler',I:'Infraction'}[o.cls]}</span>`:''}${o.law?`<a href="${link(o)}" target="_blank" rel="noopener">Full text ↗</a>`:o.k==='x'?`<a href="${curl(o)}" target="_blank" rel="noopener">${/U\.S\. \d+/.test(o.sec)&&/\d+ U\.S\. \d+/.test(o.sec)?'Full text':'Find full text'} ↗</a>`:''}</div></div>`}
+let M={mode:'reveal',src:'codes',cat:'All',lvl:3,n:10,sess:null},MS={};
+try{MS=JSON.parse(localStorage.getItem('csmem')||'{}')}catch(e){}
+const msave=()=>{try{localStorage.setItem('csmem',JSON.stringify(MS))}catch(e){}};
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+const nz=s=>' '+s.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()+' ';
+const bx=i=>(MS[i.id]||{}).b||0;
+function mitems(all){let a=[];
+if(M.src==='codes')CODES.forEach(o=>{if(o.el&&o.el.length)a.push({id:'c'+o.law+o.sec,p:o.law+' '+o.sec+' – '+o.t,t:o.t,cat:o.cat,imp:o.imp,L:o.el,kind:'Elements'})});
+else if(M.src==='cases')CASES.forEach(o=>a.push({id:'x'+o.t,p:o.t+' ('+o.sec+')',t:o.t,cat:o.cat,imp:o.imp,L:[o.s].concat(o.pt||[]),kind:'Holding and key points'}));
+else GUIDES.forEach(g=>a.push({id:'g'+g[0],p:g[0],t:g[0],cat:'Guides',imp:3,L:g[1],kind:'Checklist'}));
+return all?a:a.filter(x=>(M.cat==='All'||x.cat===M.cat)&&x.imp>=M.lvl)}
+function mqueue(){const g={};mitems().forEach(x=>{(g[bx(x)]=g[bx(x)]||[]).push(x)});return Object.keys(g).sort((p,q)=>p-q).flatMap(k=>sh(g[k])).slice(0,M.n||999)}
+function mstart(q){M.sess={q:q,i:0,ok:0,miss:[],rev:0,fl:{},ans:null,txt:'',qz:null,done:false}}
+function mset(good){const S=M.sess,it=S.q[S.i],b=bx(it);MS[it.id]={b:good?Math.min(5,b+1):1};msave();if(good)S.ok++;else S.miss.push(it)}
+function nxt(){const S=M.sess;S.i++;S.rev=0;S.fl={};S.ans=null;S.txt='';S.qz=null;if(S.i>=S.q.length)S.done=true}
+function msetup(){const a=mitems(),all=mitems(1),m=a.filter(x=>bx(x)>=4).length,nw=a.filter(x=>!bx(x)).length,cats=['All'].concat([...new Set(all.map(x=>x.cat))]);
+const sel=(f,o,v)=>`<select data-ms="${f}">${o.map(([k,n])=>`<option value="${esc(k)}" ${String(k)===String(v)?'selected':''}>${esc(n)}</option>`).join('')}</select>`;
+const modes=[['reveal','Tap to reveal'],['first','First letters'],['fill','Fill blanks'],['type','Type it'],['quiz','Quick quiz']];
+return`<div class="card"><div class="t">Memorize</div><div class="s">Drill what you need to recall. Cards you miss come back first, and cards you get right move up through five levels.</div>
+<div class="h">What</div>${sel('src',[['codes','Code elements'],['cases','Case holdings'],['guides','Guide checklists']],M.src)}
+<div class="h">Category</div>${sel('cat',cats.map(c=>[c,c]),M.cat)}
+<div class="h">Priority</div>${sel('lvl',[[3,'★★★ Must know'],[2,'★★ Common and up'],[1,'Everything']],M.lvl)}
+<div class="h">Cards per round</div>${sel('n',[[10,'10'],[20,'20'],[0,'All']],M.n)}
+<div class="h">Mode</div><div class="chips" style="flex-wrap:wrap">${modes.map(([k,n])=>`<button class="${M.mode===k?'on':''}" data-mx="mode" data-v="${k}">${n}</button>`).join('')}</div>
+<div class="s" style="margin-top:10px">${a.length} cards: ${m} mastered, ${a.length-m-nw} learning, ${nw} new</div>
+<button class="go" data-mx="start" ${a.length?'':'disabled'}>Start</button><button class="go2" data-mx="reset">Reset progress</button></div>`}
+function fillLine(x,j,a){const ws=x.split(' '),cl=w=>w.replace(/[^A-Za-z0-9]/g,'');let b=ws.map((w,k)=>cl(w).length>=5?k:-1).filter(k=>k>=0).filter((k,n)=>n%2===0);
+if(!b.length){let m=0;ws.forEach((w,k)=>{if(cl(w).length>cl(ws[m]).length)m=k});b=[m]}
+return ws.map((w,k)=>b.includes(k)?`<input class="bl ${a?(a.m[j+'-'+k]?'ok':'bad'):''}" data-j="${j}" data-k="${k}" data-a="${esc(cl(w))}" size="${Math.max(3,cl(w).length)}" value="${a?esc(cl(w)):''}" ${a?'disabled':''} autocapitalize="off" autocorrect="off" spellcheck="false">${esc(w.replace(/[A-Za-z0-9]/g,''))}`:esc(w)).join(' ')}
+function mend(){const S=M.sess;return`<div class="card"><div class="t">Round complete</div><div class="s" style="font-size:20px;margin:8px 0">${S.ok} of ${S.q.length} correct</div>${S.miss.length?`<div class="h">Missed</div><ul>${S.miss.map(x=>`<li>${esc(x.p)}</li>`).join('')}</ul>`:'<div class="s">Perfect round.</div>'}<div class="row">${S.miss.length?'<button class="go" data-mx="drill">Drill missed</button>':''}<button class="go" data-mx="again">New round</button></div><button class="go2" data-mx="setup">Back to setup</button></div>`}
+function msess(){const S=M.sess;if(S.done)return mend();const it=S.q[S.i],mo=M.mode,a=S.ans;
+const GB='<div class="row"><button class="go2" data-mx="g" data-v="0">Missed it</button><button class="go" data-mx="g" data-v="1">Got it</button></div>';
+let h=`<div class="card"><div class="top"><div class="s">Card ${S.i+1} of ${S.q.length} · ${esc(it.kind)}</div><button class="star" data-mx="quit" aria-label="quit">✕</button></div><div class="t" style="font-size:18px;margin:6px 0 4px">${mo==='quiz'?'Which one is this?':esc(it.p)}</div>`;
+if(mo==='reveal'){h+=`<ol>${it.L.slice(0,S.rev).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`;h+=S.rev<it.L.length?`<div class="s">${it.L.length-S.rev} hidden. Recall them first, then reveal.</div><div class="row"><button class="go2" data-mx="rv">Reveal next</button><button class="go2" data-mx="rvall">Reveal all</button></div>`:GB}
+else if(mo==='first'){h+=`<ol>${it.L.map((x,j)=>`<li><button class="ln" data-mx="fl" data-j="${j}">${S.fl[j]?esc(x):esc(x.split(' ').map(w=>(w.match(/[A-Za-z0-9]/)||[''])[0]).join(' '))}</button></li>`).join('')}</ol><div class="s">Recite each line from its first letters. Tap a line to reveal it.</div>`+GB}
+else if(mo==='type'){h+=`<textarea id="ta" rows="7" placeholder="Type them from memory, one per line" ${a?'disabled':''}>${esc(S.txt||'')}</textarea>`;
+h+=a?`<ol>${it.L.map((x,j)=>`<li class="${a.m[j]?'ok':'bad'}">${a.m[j]?'✓':'✗'} ${esc(x)}</li>`).join('')}</ol><div class="s">${Math.round(a.sc*100)}% matched</div><div class="row"><button class="go" data-mx="next">Next</button></div>`:'<button class="go" data-mx="chk">Check</button>'}
+else if(mo==='fill'){h+=`<ol>${it.L.map((x,j)=>`<li>${fillLine(x,j,a)}</li>`).join('')}</ol>`;h+=a?`<div class="s">${Math.round(a.sc*100)}% correct</div><div class="row"><button class="go" data-mx="next">Next</button></div>`:'<button class="go" data-mx="chk">Check</button>'}
+else{if(!S.qz){const pool=mitems(1).filter(x=>x.id!==it.id&&x.t!==it.t),d=sh(pool.filter(x=>x.cat===it.cat)).concat(sh(pool.filter(x=>x.cat!==it.cat))).slice(0,3);S.qz={ln:it.L[Math.floor(Math.random()*it.L.length)],o:sh([it].concat(d)),p:null}}
+const z=S.qz;h+=`<div class="s" style="font-size:16px;color:var(--tx);margin-bottom:8px">“${esc(z.ln)}”</div>`+z.o.map((o,j)=>`<button class="opt ${z.p===null?'':(o===it?'ok':(j===z.p?'bad':''))}" data-mx="opt" data-j="${j}">${esc(o.t)}</button>`).join('');
+if(z.p!==null)h+=`<div class="s" style="margin-top:8px">Answer: ${esc(it.p)}</div><div class="row"><button class="go" data-mx="next">Next</button></div>`}
+return h+'</div>'}
+function chk(){const S=M.sess,it=S.q[S.i];
+if(M.mode==='type'){S.txt=$('ta').value;const t=nz(S.txt),m=it.L.map(l=>{const w=nz(l).trim().split(' ').filter(x=>x.length>3);return w.length?w.filter(x=>t.includes(x)).length/w.length>=.6:t.includes(nz(l))}),sc=m.filter(Boolean).length/m.length;S.ans={m,sc};mset(sc>=.7)}
+else{const m={};let n=0,ok=0;document.querySelectorAll('input.bl').forEach(i=>{const g=i.value.toLowerCase().replace(/[^a-z0-9]/g,'')===i.dataset.a.toLowerCase();m[i.dataset.j+'-'+i.dataset.k]=g;n++;if(g)ok++});S.ans={m,sc:ok/n};mset(ok/n>=.7)}}
+function mem(){$('list').innerHTML=M.sess?msess():msetup();window.scrollTo(0,0)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-mx]');if(!b)return;const a=b.dataset.mx,S=M.sess;
+if(a==='mode')M.mode=b.dataset.v;else if(a==='start')mstart(mqueue());else if(a==='quit'||a==='setup')M.sess=null;
+else if(a==='reset'){if(confirm('Reset all memorize progress?')){MS={};msave()}}
+else if(a==='rv')S.rev++;else if(a==='rvall')S.rev=99;else if(a==='fl')S.fl[b.dataset.j]=1;
+else if(a==='g'){mset(b.dataset.v==='1');nxt()}else if(a==='chk')chk();
+else if(a==='opt'){if(S.qz.p===null){S.qz.p=+b.dataset.j;mset(S.qz.o[S.qz.p]===S.q[S.i])}}
+else if(a==='next')nxt();else if(a==='drill')mstart(S.miss.slice());else if(a==='again')mstart(mqueue());
+render()});
+document.addEventListener('change',e=>{const s=e.target.closest('[data-ms]');if(!s)return;const f=s.dataset.ms;M[f]=(f==='src'||f==='cat')?s.value:+s.value;if(f==='src')M.cat='All';render()});
 function render(){
-const T=[['c','Codes'],['x','Cases'],['g','Guides'],['f','★ Saved']];
+const T=[['c','Codes'],['x','Cases'],['g','Guides'],['m','Memorize'],['f','★ Saved']];
 $('tabs').innerHTML=T.map(([k,n])=>`<button class="${tab===k?'on':''}" data-t="${k}">${n}</button>`).join('');
+$('q').style.display=tab==='m'?'none':'';if(tab==='m'){$('chips').innerHTML='';mem();return}
 const q=$('q').value.toLowerCase().trim();
 let base=tab==='c'?CODES:tab==='x'?CASES:tab==='f'?ALL.filter(o=>fav.has(id(o))):[];
 const cats=['All',...new Set(base.map(o=>o.cat))];
