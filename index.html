@@ -34,6 +34,7 @@ textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);b
 input.bl{border:0;border-bottom:2px solid var(--ac);background:transparent;color:var(--tx);font-size:15px;padding:0 2px;text-align:center}input.bl.ok{border-color:#17803d}input.bl.bad{border-color:#c0392b}
 .rd{font-size:17px;line-height:1.8;margin-top:8px}.mk{color:var(--mu);letter-spacing:1px}.hit{color:#17803d}.miss{color:#c0392b;text-decoration:underline}
 input.bl{width:auto;border-radius:0;padding:0 2px}input[type=file]{padding:8px}
+.big{font-size:26px;font-weight:700;margin:10px 0;word-break:break-word}.opt.sel{border-color:var(--ac);background:rgba(29,78,216,.12)}
 </style></head><body>
 <header><h1>CA Street Sense <small>California law quick reference</small></h1>
 <input id="q" type="search" placeholder="Search code, section, case, keyword (e.g. 148, DUI, Terry)">
@@ -490,10 +491,223 @@ render()});
 document.addEventListener('change',e=>{const s=e.target;if(s.dataset&&s.dataset.tp!==undefined){T.part=+s.value;trst();render()}
 if(s.id==='tf'){const f=s.files&&s.files[0];if(!f)return;if(/\.(docx?|pdf|pages|rtf)$/i.test(f.name)){alert('That file type cannot be read here. Copy the text and paste it instead.');s.value='';return}
 const r=new FileReader();r.onload=()=>{$('tb').value=r.result;if(!$('tt').value)$('tt').value=f.name.replace(/\.[^.]+$/,'')};r.readAsText(f)}});
+const rgrp=c=>/^10-/.test(c)?'10-codes':/^11-/.test(c)?'11-codes':/^415/.test(c)?'415 disturbances':/^Code /.test(c)?'Code signals':/\((PC|HS|BP|WI|CVC)\)$/.test(c)?'Statutes':'9xx codes';
+const RR=`Code 22|Restricted Radio Traffic
+242 (PC)|Battery
+415J|Disturbance - Juveniles Involved
+314 (PC)|Indecent Exposure
+11-25|Traffic Hazard
+10-27|Check Driver's License & Wants Info
+647F (PC)|Drunk in Public
+10-56A|Attempted Suicide
+10-65|Missing Person
+10-57|Firearms Discharged
+11350 (HS)|Possession of a Controlled Substance
+10-34|Open Door
+10-71|Person Shot
+10-39|Status of ________
+11-54|Suspicious Vehicle
+10-73|How do you receive?
+10-49|Proceed/Proceeding to ______
+10-36|Confidential Information
+415N|Disturbance - Neighbor
+Code 1000|Aircraft Crash
+451 (PC)|Arson
+10-20|Location
+11-95|Vehicle Stop (Location & License Plate)
+11-85|Tow Truck Needed
+484 (PC)|Theft
+417 (PC)|Brandishing a Weapon
+10-86|Any Traffic?
+10-56|Suicide
+10-66|Suspicious Person
+10-12|Visitors in Vehicle/Being Transported
+10-6|Busy, Stand by
+10-35|Open Window
+25662 (BP)|Minor in Possession of Alcohol in Public
+10-66P|Suspicious Package
+10-55|Coroner's Case
+10-62|Meet the Citizen
+10-15|Prisoner in Custody (How many)
+Code 33|Emergency - Do Not Transmit
+904|Fire (specify)
+288 (PC)|Sex Offenses w/ a Child
+Code 20|Officer Needs Assistance-Emergency
+368 (PC)|Elder or Dependent Adult Abuse
+415F|Disturbance - Family Fight
+273.5 (PC)|Domestic Violence Battery Causing Injury
+602 (PC)|Trespassing
+10-16|Pick Up
+488 (PC)|Petty Theft
+10-50|Take A Report
+11-80|Vehicle Accident, Major Injury (Ambulance Needed)
+10-96|Pedestrian Stop - Send Fill
+23103 (CVC)|Reckless Driving
+5150 (WI)|Mentally Disturbed Person
+10-72|Person stabbed
+10-80|Explosion
+11-24|Abandoned Vehicle
+11-84|Traffic Control
+10-87|Meet the Officer
+10-4|Message Received and Understood
+10-28|Check Vehicle Registration & Wants Info
+10-54|Possible Dead Body
+653M (PC)|Obscene or Harassing Phone Calls
+594 (PC)|Vandalism
+415A|Disturbance - Physical Fight
+422 (PC)|Criminal Threats
+415W|Disturbance, Weapons Involved
+11-26|Abandoned or Found Bicycle
+470 (PC)|Forgery
+11-81|Vehicle Accident, Minor Injury
+10-95|Pedestrian Stop (Location & Description)
+10-91A|Vicious Animal
+10851 (CVC)|Stolen Vehicle
+10-21R|Phone Radio
+10-23|Standby
+10-67|Person Calling For Help
+10-97|Arrived At Assignment
+11-82|Vehicle Accident, Property Damage
+11-96|Vehicle Stop - Send Fill
+459 (PC)|Burglary
+530.5 (PC)|Identity Theft
+952|Report on Conditions
+Code 5|Stake out
+220 (PC)|Assault with the Intent to Commit Felony Sex Crimes
+10852 (CVC)|Vehicle Tampering
+273D (PC)|Child Abuse
+10-9|Repeat
+10-40|Available For A Phone Call?
+10-29C|Criminal History Check (Specify)
+10-33|Alarm
+10-51|Intoxicated Person
+10-58|Garbage Complaint
+20002 (CVC)|Hit and Run - Property Damage Only
+11-83|Vehicle Accident, Unknown Injury - Advise
+10-98|Completed Last Assignment (Disposition)
+10-8|In Service
+487 (PC)|Grand Theft
+4532 (PC)|Escape
+10-2|Receiving ok
+Code 6M|Misdemeanor Want
+Code 10|Bomb Threat
+211 (PC)|Robbery
+Code 30|Officer needs assistance-Major Emergency
+476 (PC)|Bad Checks
+10-14|Escort
+496 (PC)|Receiving/possession of Stolen Property
+10-19|Return/En route to Station
+10-3|Change Channels (Specify)
+647B (PC)|Soliciting for Prostitution
+23152 (CVC)|Driving Under the Influence (DUI)
+20001 (CVC)|Hit and Run - Injury or Death
+Code 6F|Felony Want
+261 (PC)|Rape
+22500 (CVC)|Parking Violations
+415G|Disturbance, Gang Fight
+10-7R|Out of Service, Monitoring Radio
+10-69|Wire Down
+415M|Disturbance, Loud Music
+956|Busy, But Available
+Code 6H|Hazard Potential
+537 (PC)|Defrauding an Innkeeper
+246 (PC)|Discharge Firearm into Inhabited Dwelling/Occupied Vehicle`.split('\n').map((l,i)=>{const a=l.split('|');return{id:'r'+i,code:a[0],m:a[1],deck:'radio',grp:rgrp(a[0])}});
+const RV=`VC 2800|Evade Peace Officer in Vehicle
+VC 2800.2(a)|Evade Peace Officer w/Reckless Driving
+VC 4000(a)(1)|Expired Registration
+VC 4454(a)|Registration Card not in vehicle
+VC 4462.5|False Tabs
+VC 5200(a)|No Front Plate
+VC 5204(a)|Current Registration Tabs
+VC 10851(a)|Vehicle Theft
+VC 10852|Vehicle Tampering
+VC 12500(a)|Unlicensed Driver
+VC 12951(a)|Driver's License not in Possession
+VC 14601(a)|Driving w/Suspended Driver's License
+VC 16028(a)|No Proof of Insurance
+VC 20001(a)|Hit and Run - Causing Injury or Death
+VC 20002(a)|Hit and Run - Property Damage
+VC 21201(d)|Bicycle Illumination
+VC 21453(a)|Red Light Violation
+VC 21650.1|Bicycle Riding on Wrong Side of Roadway
+VC 21658(a)|Fail to Maintain Single Lane (Straddling)
+VC 22349(a)|Exceeding 65mph max limit
+VC 22350|Basic Speed Law
+VC 22450(a)|Stop Sign Violation
+VC 22500|Parking Violations
+VC 23103(a)|Reckless Driving
+VC 23109(a)|Speed Contest
+VC 23112(a)|Littering/Dumping on Highway
+VC 23123(a)|Cell Phone Use while Driving
+VC 23123.5(a)|Text-Based Communication - Driving
+VC 23152|Driving Under the Influence (DUI)
+VC 23222(a)|Open Container - Alcohol
+VC 23222(b)(1)|Open Container - Cannabis
+VC 24250|During Darkness - Lighting Required
+VC 24400(b)|During Darkness - Two Headlamps Required
+VC 24600(b)|Tail Lamps (Two Required)
+VC 24601|License Plate Light
+VC 24603(b)|Stop Lamps (Two Required)
+VC 26708(a)(1)|Window Tint
+VC 27315(d)(1)|Seat Belt Required - Driver
+VC 22651(c)|Vehicle Stolen - Found on Highway
+VC 22651(d)|Vehicle Blocking Driveway
+VC 22651(h)|Driver Arrested and Taken into Custody
+VC 22651(o)(1)(a)|Vehicle in Public Area w/Expired Registration - Over 6 months
+VC 22651(p)|Driver has Suspended/Revoked DL or Unlicensed`.split('\n').map((l,i)=>{const a=l.split('|');return{id:'v'+i,code:a[0],m:a[1],deck:'vc',grp:i>=38?'Tow authorities':'Vehicle code violations'}});
+const RQ=RR.concat(RV);
+const RD=[['rall','Radio codes: all 120',x=>x.deck==='radio'],['r10','10-codes',x=>x.grp==='10-codes'],['r11','11-codes',x=>x.grp==='11-codes'],['r415','415 disturbances',x=>x.grp==='415 disturbances'],['rcode','Code signals (Code 20, 33, 6F...)',x=>x.grp==='Code signals'],['r9','9xx codes (904, 952, 956)',x=>x.grp==='9xx codes'],['rstat','Statutes in the radio quiz',x=>x.grp==='Statutes'],['vall','Vehicle codes Quiz #11 (all 43)',x=>x.deck==='vc'],['vtow','Tow authorities (VC 22651)',x=>x.grp==='Tow authorities'],['all','Everything (163)',()=>true]];
+let RQs={deck:'rall',dir:'cm',fmt:'mc',n:20,sess:null,list:false,search:''},LQ={};
+try{LQ=JSON.parse(localStorage.getItem('csrq')||'{}')}catch(e){}
+const lqs=()=>{try{localStorage.setItem('csrq',JSON.stringify(LQ))}catch(e){}};
+const rnorm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');
+const rcan=s=>rnorm(s).replace(/(pc|hs|cvc|vc|bp|wi)/g,'');
+const rbx=i=>(LQ[i.id]||{}).b||0;
+const ritems=()=>RQ.filter(RD.find(x=>x[0]===RQs.deck)[2]);
+function rmk(it){const d=RQs.fmt==='type'?'mc':(RQs.dir==='mix'?(Math.random()<.5?'cm':'mc'):RQs.dir);let o=null;
+if(RQs.fmt==='mc'||RQs.fmt==='test'){const tx=x=>d==='cm'?x.m:x.code,pool=RQ.filter(x=>x!==it&&rnorm(x.m)!==rnorm(it.m)),same=sh(pool.filter(x=>x.grp===it.grp)),rest=sh(pool.filter(x=>x.grp!==it.grp)),seen=new Set([tx(it)]),dis=[];
+same.concat(rest).forEach(x=>{if(dis.length<3&&!seen.has(tx(x))){seen.add(tx(x));dis.push(x)}});o=sh([it].concat(dis)).map(x=>({t:tx(x),c:x===it}))}
+return{it,d,o,p:null,typed:'',ok:null,rev:0}}
+function rstart(){const its=ritems();let q;if(RQs.fmt==='test')q=sh(its);else{const g={};its.forEach(x=>{(g[rbx(x)]=g[rbx(x)]||[]).push(x)});q=Object.keys(g).sort((p,r)=>p-r).flatMap(k=>sh(g[k]))}
+RQs.sess={q:q.slice(0,RQs.n||999).map(rmk),i:0,ok:0,miss:[],done:false}}
+function rgrade(good){const S=RQs.sess,it=S.q[S.i].it,b=rbx(it);LQ[it.id]={b:good?Math.min(5,b+1):1};lqs();if(good)S.ok++;else S.miss.push(it)}
+function rnext(){const S=RQs.sess;S.i++;if(S.i>=S.q.length)S.done=true}
+function rmatch(it,typed){const t=rnorm(typed);if(!t)return false;const m=x=>rcan(typed)===rcan(x.code)||(/^code/.test(rnorm(x.code))&&t===rnorm(x.code).replace(/^code/,''));return RQ.some(x=>(x===it||rnorm(x.m)===rnorm(it.m))&&m(x))}
+function rqrows(){const q=RQs.search.toLowerCase().trim();return RQ.filter(x=>!q||(x.code+' '+x.m+' '+x.grp).toLowerCase().includes(q)).map(x=>`<div class="card" style="padding:9px 12px"><span class="code">${esc(x.code)}</span> ${esc(x.m)} <span class="tag">${esc(x.grp)}</span></div>`).join('')||'<div class="foot">No matches.</div>'}
+function rqsetup(){const its=ritems(),m=its.filter(x=>rbx(x)>=4).length,nw=its.filter(x=>!rbx(x)).length;
+const sel=(f,o,v)=>`<select data-rqs="${f}">${o.map(([k,n])=>`<option value="${esc(String(k))}" ${String(k)===String(v)?'selected':''}>${esc(n)}</option>`).join('')}</select>`;
+return`<div class="card"><div class="t">FTP Quiz</div><div class="s">Radio codes (Quiz #1) and vehicle codes (Quiz #11) from the Sheriff's Office Field Training Program answer keys.</div>
+<div class="h">Deck</div>${sel('deck',RD.map(x=>[x[0],x[1]]),RQs.deck)}
+<div class="h">Direction</div>${sel('dir',[['cm','Code to meaning'],['mc','Meaning to code'],['mix','Mixed']],RQs.dir)}
+<div class="h">Format</div>${sel('fmt',[['mc','Multiple choice'],['type','Type the code (meaning to code)'],['flash','Flashcards'],['test','Practice test (no feedback until the end)']],RQs.fmt)}
+<div class="h">Questions</div>${sel('n',[[10,'10'],[20,'20'],[40,'40'],[0,'All']],RQs.n)}
+<div class="s" style="margin-top:10px">${its.length} cards: ${m} mastered, ${its.length-m-nw} learning, ${nw} new</div>
+<button class="go" data-rq="start">Start</button><button class="go2" data-rq="list">Browse all codes</button><button class="go2" data-rq="reset">Reset progress</button></div>`}
+function rqrun(){const S=RQs.sess;if(S.done)return rqend();const q=S.q[S.i],it=q.it,pr=q.d==='cm'?it.code:it.m,an=q.d==='cm'?it.m:it.code,f=RQs.fmt;
+let h=`<div class="card"><div class="top"><div class="s">${f==='test'?'Practice test · ':''}Question ${S.i+1} of ${S.q.length}</div><button class="star" data-rq="quit" aria-label="quit">✕</button></div><div class="s">${q.d==='cm'?'What does this code mean?':'What is the code?'}</div><div class="big">${esc(pr)}</div>`;
+if(f==='flash')h+=q.rev?`<div class="t" style="font-size:20px;margin:6px 0">${esc(an)}</div><div class="row"><button class="go2" data-rq="g" data-v="0">Missed it</button><button class="go" data-rq="g" data-v="1">Got it</button></div>`:'<button class="go" data-rq="rev">Show answer</button>';
+else if(f==='type'){h+=`<input id="rqa" type="text" placeholder="Type the code" autocapitalize="off" autocorrect="off" spellcheck="false" value="${qe(q.typed)}" ${q.ok!==null?'disabled':''}>`;h+=q.ok===null?'<button class="go" data-rq="chk">Check</button>':`<div class="s ${q.ok?'ok':'bad'}" style="margin-top:8px">${q.ok?'Correct':'Answer: '+esc(an)}</div><div class="row"><button class="go" data-rq="next">Next</button></div>`}
+else{h+=q.o.map((o,j)=>`<button class="opt ${q.p===null?'':(f==='test'?(j===q.p?'sel':''):(o.c?'ok':(j===q.p?'bad':'')))}" data-rq="opt" data-j="${j}">${esc(o.t)}</button>`).join('');if(q.p!==null)h+=`<div class="row"><button class="go" data-rq="next">${S.i+1>=S.q.length?'Finish':'Next'}</button></div>`}
+return h+'</div>'}
+function rqend(){const S=RQs.sess,tot=S.q.length,m=S.miss.length,pct=Math.round(1000*(tot-m)/tot)/10,SC=['100%','99.1%','98.3%','97.5%','96.6%','95.8%','95%'];
+let g='';if(RQs.deck==='rall'&&tot===120)g=m<=6?`<div class="s">Field Training Program scale: ${SC[m]}. Pass.</div>`:m===7?'<div class="s">7 missed: the key lists no score for this, and says more than 7 is a failure.</div>':'<div class="s bad">More than 7 missed: failure by the key.</div>';
+return`<div class="card"><div class="t">Round complete</div><div class="big">${S.ok} of ${tot} (${pct}%)</div>${g}${m?`<div class="h">Missed</div><ul>${S.miss.map(x=>`<li><b>${esc(x.code)}</b>: ${esc(x.m)}</li>`).join('')}</ul>`:'<div class="s">Perfect round.</div>'}<div class="row">${m?'<button class="go" data-rq="drill">Drill missed</button>':''}<button class="go" data-rq="again">New round</button></div><button class="go2" data-rq="setup">Back to setup</button></div>`}
+function rqview(){const L=$('list');if(RQs.sess)L.innerHTML=rqrun();else if(RQs.list)L.innerHTML=`<div class="card"><div class="top"><div class="t">All codes (${RQ.length})</div><button class="go2" style="width:auto;margin:0;padding:8px 14px" data-rq="back">Back</button></div><input id="rqsrch" type="search" placeholder="Search code or meaning" value="${qe(RQs.search)}" style="margin-top:8px"></div><div id="rqres">${rqrows()}</div>`;else L.innerHTML=rqsetup();window.scrollTo(0,0)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rq]');if(!b)return;const a=b.dataset.rq,S=RQs.sess;
+if(a==='start'||a==='again')rstart();else if(a==='list')RQs.list=true;else if(a==='back')RQs.list=false;else if(a==='quit'||a==='setup')RQs.sess=null;
+else if(a==='reset'){if(confirm('Reset quiz progress?')){LQ={};lqs()}}
+else if(a==='rev')S.q[S.i].rev=1;else if(a==='g'){rgrade(b.dataset.v==='1');rnext()}
+else if(a==='opt'){const q=S.q[S.i];if(q.p===null){q.p=+b.dataset.j;rgrade(q.o[q.p].c)}}
+else if(a==='chk'){const q=S.q[S.i];q.typed=$('rqa').value;q.ok=rmatch(q.it,q.typed);rgrade(q.ok)}
+else if(a==='next')rnext();
+else if(a==='drill'){RQs.sess={q:S.miss.slice().map(rmk),i:0,ok:0,miss:[],done:false}}
+render()});
+document.addEventListener('change',e=>{const s=e.target;if(s.dataset&&s.dataset.rqs){RQs[s.dataset.rqs]=s.dataset.rqs==='n'?+s.value:s.value;render()}});
+document.addEventListener('input',e=>{if(e.target.id==='rqsrch'){RQs.search=e.target.value;$('rqres').innerHTML=rqrows()}});
 function render(){
-const T=[['c','Codes'],['x','Cases'],['p','SCSO Policy'],['g','Guides'],['m','Memorize'],['t','My Text'],['f','★ Saved']];
+const T=[['c','Codes'],['x','Cases'],['p','SCSO Policy'],['g','Guides'],['m','Memorize'],['t','My Text'],['r','FTP Quiz'],['f','★ Saved']];
 $('tabs').innerHTML=T.map(([k,n])=>`<button class="${tab===k?'on':''}" data-t="${k}">${n}</button>`).join('');
-$('q').style.display=(tab==='m'||tab==='t')?'none':'';if(tab==='m'||tab==='t'){$('chips').innerHTML='';if($('imps'))$('imps').innerHTML='';tab==='m'?mem():tview();return}
+$('q').style.display=(tab==='m'||tab==='t'||tab==='r')?'none':'';if(tab==='m'||tab==='t'||tab==='r'){$('chips').innerHTML='';if($('imps'))$('imps').innerHTML='';tab==='m'?mem():tab==='r'?rqview():tview();return}
 const q=$('q').value.toLowerCase().trim();
 let base=tab==='c'?CODES:tab==='x'?CASES:tab==='p'?POL:tab==='f'?ALL.filter(o=>fav.has(id(o))):[];
 const cats=['All',...new Set(base.map(o=>o.cat))];
